@@ -22,7 +22,8 @@ steps:
           --project=tableau-to-looker-migration \
           dist/*
 
-
+options:
+  logging: CLOUD_LOGGING_ONLY
 
 
 
