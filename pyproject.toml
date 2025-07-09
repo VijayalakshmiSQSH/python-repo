@@ -1,0 +1,14 @@
+[project]
+name = "tableau-to-lk-package"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "boopathi", email = "boopathi.jothi@squareshift.co" }
+]
+requires-python = ">=3.8"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
