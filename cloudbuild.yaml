@@ -1,28 +1,31 @@
 steps:
   # Install uv and build
-  - name: 'python:3.11'
+  - name: 'python:3.11-slim'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         apt-get update && apt-get install -y curl build-essential
-        pip install uv  
+        uv pip install --upgrade build twine
         uv build
-
-  # Step 2: Push to Artifact Registry
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud artifacts python upload \
-          --repository=test-repo \
-          --location=us-central1 \
-          --project=tableau-to-looker-migration \
-          dist/*
-
+        twine upload --repository-url https://us-central1-python.pkg.dev/tableau-to-looker-migration/test-repo dist/*
 options:
   logging: CLOUD_LOGGING_ONLY
+
+#   # Step 2: Push to Artifact Registry
+#   - name: 'gcr.io/cloud-builders/gcloud'
+#     entrypoint: 'bash'
+#     args:
+#       - '-c'
+#       - |
+#         gcloud artifacts python upload \
+#           --repository=test-repo \
+#           --location=us-central1 \
+#           --project=tableau-to-looker-migration \
+#           dist/*
+
+# options:
+#   logging: CLOUD_LOGGING_ONLY
 
 
 
