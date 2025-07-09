@@ -1,16 +1,17 @@
 steps:
-  # Install uv and build
-  - name: 'python:3.11-slim'
-    entrypoint: 'bash'
+  # Build python package and push it to cloud Artifact Registry
+  - name: python
+    entrypoint: bash
     args:
       - '-c'
       - |
-        apt-get update && apt-get install -y curl build-essential
-        uv pip install --upgrade build twine
-        uv build
+        # Installing required packages
+        pip install --upgrade build twine keyrings.google-artifactregistry-auth
+        # Changing project directory
+        cd legal-doc-ai
+        # Building the source code
+        python -m build
         twine upload --repository-url https://us-central1-python.pkg.dev/tableau-to-looker-migration/test-repo dist/*
-options:
-  logging: CLOUD_LOGGING_ONLY
 
 #   # Step 2: Push to Artifact Registry
 #   - name: 'gcr.io/cloud-builders/gcloud'
