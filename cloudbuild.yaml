@@ -1,0 +1,49 @@
+steps:
+  # Step 1: Install uv and build
+  - name: 'python:3.11-slim'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        apt-get update && apt-get install -y curl build-essential
+        curl -LsSf https://astral.sh/uv/install.sh | bash
+        export PATH="/root/.cargo/bin:$PATH"
+        ~/.cargo/bin/uv build
+
+  # Step 2: Push to Artifact Registry
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud artifacts python upload \
+          --repository=test-repo \
+          --location=us-central1 \
+          --project=tableau-to-looker-migration \
+          dist/*
+
+
+
+
+
+
+ 
+#   # Step 3: Authenticate with Artifact Registry
+#   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+#     id: Authenticate Artifact Registry
+#     entrypoint: bash
+#     args:
+#       - -c
+#       - |
+#         gcloud auth configure-docker us-central1-pypi.pkg.dev
+#   # Step 4: Upload package to Artifact Registry
+#   - name: python:3.11
+#     id: Upload to Artifact Registry
+#     entrypoint: bash
+#     args:
+#       - -c
+#       - |
+#         python -m pip install --upgrade twine
+#         twine upload --repository-url https://us-central1-pypi.pkg.dev/my-gcp-project/pypi-repo dist/*
+# images:
+#   - us-central1-docker.pkg.dev/my-gcp-project/pypi-repo/helloword
