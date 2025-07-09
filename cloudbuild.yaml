@@ -6,7 +6,8 @@ steps:
       - '-c'
       - |
         curl -LsSf https://astral.sh/uv/install.sh | sh
-        export PATH="/python-repo"
+        export PATH="$HOME/.local/bin:$PATH"
+        cd /python-repo
         uv build
 
   # Step 2: Push to Artifact Registry
