@@ -1,14 +1,13 @@
 steps:
-  # Step 1: Install uv and build
-  - name: 'python:3.11-slim'
+  # Install uv and build
+  - name: 'python:3.11'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        apt-get update && apt-get install -y curl build-essential
-        curl -LsSf https://astral.sh/uv/install.sh | bash
-        export PATH="/root/.cargo/bin:$PATH"
-        ~/.cargo/bin/uv build
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        export PATH="/python-repo"
+        uv build
 
   # Step 2: Push to Artifact Registry
   - name: 'gcr.io/cloud-builders/gcloud'
